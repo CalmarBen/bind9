@@ -36,6 +36,7 @@ MANPAGES_RST =				\
 	rndc.conf.rst			\
 	rndc.rst			\
 	tsig-keygen.rst			\
+	update-ipset.rst	\
 	../../bin/check/named-checkconf.rst \
 	../../bin/check/named-checkzone.rst \
 	../../bin/check/named-compilezone.rst \
@@ -60,6 +61,7 @@ MANPAGES_RST =				\
 	../../bin/nsupdate/nsupdate.rst \
 	../../bin/plugins/filter-aaaa.rst \
 	../../bin/plugins/filter-a.rst \
+	../../bin/plugins/update-ipset.rst \
 	../../bin/rndc/rndc.conf.rst \
 	../../bin/rndc/rndc.rst \
 	../../bin/tools/arpaname.rst \
@@ -101,7 +103,8 @@ man_MANS =				\
 	nsec3hash.1			\
 	rndc-confgen.8			\
 	rndc.8				\
-	tsig-keygen.8
+	tsig-keygen.8	\
+	update-ipset.8
 
 if HAVE_DNSTAP
 man_MANS +=				\

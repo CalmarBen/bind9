@@ -137,6 +137,13 @@ man_pages = [
         author,
         8,
     ),
+    (
+        "update-ipset",
+        "update-ipset",
+        "update ipsets if some domain wildcards are requested",
+        author,
+        8,
+    ),
     ("host", "host", "DNS lookup utility", author, 1),
     ("mdig", "mdig", "DNS pipelined lookup utility", author, 1),
     (

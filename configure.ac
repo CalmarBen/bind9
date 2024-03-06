@@ -562,6 +562,43 @@ AC_ARG_WITH([locktype],
 			    (adaptive or standard)]),
 	    [], [with_locktype="adaptive"])
 
+
+AC_ARG_WITH([ipset_plugin],
+	    [AS_HELP_STRING([--with-ipset_plugin],
+			    [build with update-ipset plugin [yes|no|auto|nftnl|libipset] (default is auto)])],
+	    [], [with_ipset_plugin="auto"])
+
+AS_CASE([$with_ipset_plugin],
+	[no],[],
+	[auto|yes],
+	[PKG_CHECK_MODULES([IPSET_PLUGIN], [libnftnl >= 1.2.1, libmnl, libipset >= 7.15],
+			   [AC_DEFINE([WITH_UPDATE_IPSET_PLUGIN], [1], [update-ipset plugin enabled])
+			    AC_DEFINE([HAVE_LIBNFTNL], [1], [Build with libnftnl library])
+			    AC_DEFINE([HAVE_LIBIPSET], [1], [Build with libipset library])],
+			   [PKG_CHECK_MODULES([IPSET_PLUGIN], [libnftnl >= 1.2.1, libmnl],
+					[AC_DEFINE([WITH_UPDATE_IPSET_PLUGIN], [1], [update-ipset plugin enabled])
+					 AC_DEFINE([HAVE_LIBNFTNL], [1], [Build with libnftnl library])],
+					[PKG_CHECK_MODULES([IPSET_PLUGIN], [libipset >= 7.15],
+							[AC_DEFINE([WITH_UPDATE_IPSET_PLUGIN], [1], [update-ipset plugin enabled]),
+							 AC_DEFINE([HAVE_LIBIPSET], [1], [Build with libipset library])],
+							[AS_IF([test "$with_ipset_plugin" = "yes"],
+								[AC_MSG_ERROR([ipset_plugin support requested, but none of the libraries have been found.])])])])])],
+	[nftnl],
+	[PKG_CHECK_MODULES([IPSET_PLUGIN], [libnftnl >= 1.2.1, libmnl],
+			   [AC_DEFINE([WITH_UPDATE_IPSET_PLUGIN], [1], [update-ipset plugin enabled])
+			    AC_DEFINE([HAVE_LIBNFTNL], [1], [Build with libnftnl library])],
+			   [AS_IF([test "$with_ipset_plugin" = "nftnl"],
+				[AC_MSG_ERROR([ipset_plugin support requested for nftables, but nftnl library was not found.])])])],
+	[libipset],
+	[PKG_CHECK_MODULES([IPSET_PLUGIN], [libipset >= 7.15],
+			   [AC_DEFINE([WITH_UPDATE_IPSET_PLUGIN], [1], [update-ipset plugin enabled])
+			    AC_DEFINE([HAVE_LIBIPSET], [1], [Build with libipset library])],
+  		  	   [AS_IF([test "$with_ipset_plugin" = "libipset"],
+				[AC_MSG_ERROR([ipset_plugin support requested for libipset, but libipset library was not found.])])])])
+
+AM_CONDITIONAL([HAVE_IPSET_PLUGIN], [test -n "$IPSET_PLUGIN_LIBS"])
+
+
 AC_CHECK_HEADERS([sched.h])
 
 AC_SEARCH_LIBS([sched_yield],[rt])

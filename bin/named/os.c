@@ -151,6 +151,13 @@ linux_initialprivs(void) {
 	 */
 	SET_CAP(CAP_NET_BIND_SERVICE);
 
+#if WITH_UPDATE_IPSET_PLUGIN
+	/*
+	*  This privilege is needed for update-ipset plugin
+	*/
+	SET_CAP(CAP_NET_ADMIN);
+#endif
+
 	/*
 	 * We need chroot() initially too.
 	 */
@@ -211,6 +218,13 @@ linux_minprivs(void) {
 	 */
 
 	SET_CAP(CAP_NET_BIND_SERVICE);
+
+#if WITH_UPDATE_IPSET_PLUGIN
+	/*
+	*  This privilege is needed for update-ipset plugin
+	*/
+	SET_CAP(CAP_NET_ADMIN);
+#endif
 
 	/*
 	 * XXX  We might want to add CAP_SYS_RESOURCE, though it's not
